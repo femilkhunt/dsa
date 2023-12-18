@@ -41,11 +41,15 @@ void quicksort(int a[],int first,int last)
 }
 int main()
 {
-    int a[25],i;
+    int a[25],i;   
     printf("how many element enter:");
      scanf("%d",&n);
+
+
+
     for(i=0; i<n; i++)
-    a[i]=rand()%100+1;
+     a[i]=rand()%10;
+    // scanf("%d"&a[i]);
 
     quicksort(a,0,n-1);
     printf("\n after quick sort:");

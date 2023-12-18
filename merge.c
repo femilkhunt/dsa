@@ -25,20 +25,24 @@ int mergesort(int a[], int l, int h)
     int mid;
     if (l < h)
     {
+        int n=5;
         mid = (l + h) / 2;
         mergesort(a, l, mid);
         mergesort(a, mid + 1, h);
         merge(a, l, mid, h);
+        printf("\n");                          //for checking the changes happen during the loop
+        for (int i = 0; i < n; i++)            //for checking the changes happen during the loop
+            printf("%d ", a[i]);               //for checking the changes happen during the loop
     }       
 }
 int main()
 {
-    int a[15], n = 15, i;
+    int a[5], n = 5, i;
     for (i = 0; i < n; i++)
         a[i] = rand() % 49 + 1;
-    printf("before sorting array is:\n");
-    for (i = 0; i < n; i++)
-        printf("%d ", a[i]);
+    // printf("before sorting array is:\n");
+    // for (i = 0; i < n; i++)
+    //     printf("%d ", a[i]);
 
     mergesort(a, 0, n - 1);
     printf("\n after sorting array is:\n");
