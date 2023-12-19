@@ -1,1 +1,1 @@
-mergesort(a, l, mid);
+n
