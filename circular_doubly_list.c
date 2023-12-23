@@ -4,7 +4,7 @@ struct node *head=NULL;
 struct node{
     int data;
     struct node *next;
-    struct node *previous;`
+    struct node *previous;
 };
 
 
@@ -13,43 +13,45 @@ void insertend(int val)
     struct node *ptr = head; 
     struct node *temp = malloc(sizeof(struct node));
     temp->data=val;
-    temp->next=NULL;
 
     if(head == NULL)
     {
         head=temp;
-        return;
+        head->next=head;
+        head->previous=head;
     }
     else{
-        while(ptr->next != NULL)
+        while(ptr->next != head)
         {
             ptr = ptr ->next;
         }
         ptr->next = temp;
-        return;
+        temp->previous=ptr;
+        temp->next=head;
     }
 }
 
-void deleteend()
+void deleteend(int last)
 {
     struct node *ptr = head,*p;
 
     if(head == NULL)
     {
-        printf("List is already empTY\n");
+        printf("List is already empty\n");
     }
-    else if(head->next == NULL)
+    else if(ptr->next == head && last<2)
     {
         head= NULL;
         free(ptr);
     }
     else{
-        while(ptr->next != NULL)
+        while(ptr->next != head)
         {
             p=ptr;
             ptr=ptr->next;
         }
-        p->next=NULL;
+        p->next=head;
+        head->previous=p;
         free(ptr);
     }
 }
@@ -64,8 +66,10 @@ void insertmiddle(int val, int last)
 
     if(head==NULL)
     {
-        printf("List is already empty so Data will be store at topmost position only;\n");
+        printf("List is already empty so Data will be store at topmost position only \n");
         head =temp;
+        head->next=head;
+        head->previous=head;
     }
     else{
         printf("Enter a position to Insert :");
@@ -78,8 +82,7 @@ void insertmiddle(int val, int last)
         i=1;
         if(x==1)
         {
-            temp->next=head;
-            head=temp;
+            insertfirst(val,last);
         }
         else{
         while(i<x)
@@ -89,12 +92,10 @@ void insertmiddle(int val, int last)
             ptr=ptr->next;
         }
         temp->next=ptr;
+        ptr->previous=temp;
+        temp->previous=p;
         p->next=temp;
         }   
-    // p=ptr->next;
-    // ptr -> next =temp;
-    // ptr= ptr->next;
-    // ptr->next=p;
     }
     end :
         printf("");
@@ -120,8 +121,11 @@ void deletemiddle(int last)
         i=1;
         if(x==1)
         {
-            head=ptr->next;
-            free(ptr);
+            deletefirst(last);
+        }
+        else if(x==last)
+        {
+            deleteend(last);
         }
         else{
         while(i<x) 
@@ -131,6 +135,7 @@ void deletemiddle(int last)
             ptr=ptr->next;
         }
         p->next=ptr->next;
+        ptr->next->previous=p;
         free(ptr);
         }
     
@@ -140,15 +145,34 @@ void deletemiddle(int last)
 }
 
 
-void insertfirst(int val)
+void insertfirst(int val,int last)
 {
     struct node *ptr=head;
     struct node *temp= malloc(sizeof(struct node));
     temp->data=val;
+    int i;
+    if(head==NULL)
+    {
+        head=temp;
+        ptr=head;
+        ptr->next=head;
+        ptr->previous=head;
+    }
+    else{
+    i=1;
+    while(i<last)
+    {
+        i++;
+        ptr=ptr->next;
+    }
+    ptr->next=temp;
     temp->next=head;
+    temp->previous=ptr;
     head=temp;
+    }
 }
-void deletefirst()
+
+void deletefirst(int last)
 {
     struct node *ptr=head;
     struct node *temp= malloc(sizeof(struct node));
@@ -159,6 +183,16 @@ void deletefirst()
     else{
     head=ptr->next;
     free(ptr);
+    ptr=head;
+     int i;
+    i=1;
+    while(i<last-1)
+    {
+        i++;
+        ptr=ptr->next;
+    }
+    ptr->next=head;
+    head->previous=ptr;
     }
 }
 
@@ -168,12 +202,17 @@ int count ()
     struct node *ptr =head;
     int i;
     i=0;
-    while(ptr != NULL)
+    if(head==NULL)
     {
+        return 0;
+    }
+    else{
+    do{
         i++;
         ptr=ptr->next;
-    }
+    }while(ptr != head);
     return i;
+    }
 }
 
 void display()
@@ -181,15 +220,14 @@ void display()
     struct node *ptr =head;
     if(head==NULL)
     {
-        printf("Line already Empty\n");
+        printf("List already Empty\n");
     }
     else 
     {
-        while(ptr != NULL)
-        {
+        do{
             printf("%d ",ptr->data);
             ptr=ptr->next;
-        }
+        }while(ptr != head);
         printf("\n");
     }
 }
@@ -214,9 +252,10 @@ int main()
                 }
             case 2:
                 {
+                    last=count();
                     printf("Enter value to insert :");    
                     scanf("%d",&x);
-                    insertfirst(x);
+                    insertfirst(x,last);
                     break;
                 }
             case 3:
@@ -231,12 +270,14 @@ int main()
                 }
             case 4:
                 {
-                    deleteend();
+                    last=count();
+                    deleteend(last);
                     break;
                 }
             case 5:
                 {
-                    deletefirst();
+                    last=count();
+                    deletefirst(last);
                     break;
                 }
             case 6:
