@@ -143,8 +143,7 @@ void deletemiddle(int last)
     end :
         printf("");
 }
-
-
+  
 void insertfirst(int val,int last)
 {
     struct node *ptr=head;
@@ -195,7 +194,6 @@ void deletefirst(int last)
     head->previous=ptr;
     }
 }
-
 
 int count ()
 {
@@ -293,8 +291,7 @@ int main()
                     goto end;
                 }
             default :
-                goto end;
-                
+                goto end;    
         }
     }
     end :
